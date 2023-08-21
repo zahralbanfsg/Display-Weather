@@ -1,0 +1,62 @@
+body {
+  background-color: #282c37;
+  color: white;
+}
+nav h3 {
+  color: white;
+}
+nav div a {
+  width: 10%;
+  line-height: 0.1;
+}
+nav div a small {
+  font-size: 10px;
+  margin-left: 5px;
+  color: white;
+}
+.navbar-nav .nav-link.active,
+.navbar-nav .nav-link.show {
+  color: #009ad8;
+}
+.navbar-nav .nav-link {
+  color: white;
+}
+
+.navbar-nav .nav-item {
+  border: 2px solid #009ad8;
+
+}
+p {
+  margin-bottom: 0;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-bottom: 0;
+}
+.currantDetails {
+  padding-inline: 4rem;
+}
+
+.dailyWeatherInfo {
+  width: 30%;
+  border: 5px solid white;
+  border-radius: 5px;
+}
+
+.form-control {
+  width: 50%;
+  margin: auto;
+}
+
+.currentBoxInfo {
+  width: 50%;
+  margin: auto;
+}
+
+.date {
+  direction: ltr;
+}
