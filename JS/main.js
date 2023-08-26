@@ -1,3 +1,4 @@
+"use strict"
 let cityOrCountryName = document.querySelector("input");
 let dateOrDay = new Date()
 let dayName;
@@ -5,9 +6,6 @@ let dayNumber;
 let monthName;
 let yearNumber;
 
-cityOrCountryName.value = "cairo";
-getData()
-cityOrCountryName.value = "";
 
 cityOrCountryName.addEventListener("input", getData);
 
@@ -97,3 +95,25 @@ function displayDate() {
     monthName = dateOrDay.toLocaleDateString("en-us", { month: "long" });
     yearNumber = dateOrDay.toLocaleDateString("en-us", { year: "numeric" });
 }
+
+function getCurrentWeather() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (currentPosition) {
+            console.log(currentPosition);
+            getData(
+                [
+                    currentPosition.coords.latitude,
+                    currentPosition.coords.longitude,
+                ].join(",")
+            );
+        });
+    }
+}
+
+async function displayAllData() {
+    await getData();
+    getCurrentWeather();
+}
+
+displayAllData();
+
