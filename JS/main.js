@@ -83,9 +83,7 @@ async function getData() {
             document.getElementById('futureDailyWeather').innerHTML = displayData;
         }
     } else {
-        cityOrCountryName.value = "cairo";
-        getData()
-        cityOrCountryName.value = "";
+        getCoordintes()
     }
 }
 
@@ -96,24 +94,57 @@ function displayDate() {
     yearNumber = dateOrDay.toLocaleDateString("en-us", { year: "numeric" });
 }
 
-function getCurrentWeather() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function (currentPosition) {
-            console.log(currentPosition);
-            getData(
-                [
-                    currentPosition.coords.latitude,
-                    currentPosition.coords.longitude,
-                ].join(",")
-            );
-        });
+
+function getCoordintes() {
+    var options = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0
+    };
+
+    function success(pos) {
+        var crd = pos.coords;
+        var lat = crd.latitude.toString();
+        var lng = crd.longitude.toString();
+        var coordinates = [lat, lng];
+        console.log(coordinates)
+        getCity(coordinates);
+        return;
+    }
+
+    function error(err) {
+        console.warn(`ERROR(${err.code}): ${err.message}`);
+    }
+
+    navigator.geolocation.getCurrentPosition(success, error, options);
+}
+
+function getCity(coordinates) {
+    var xhr = new XMLHttpRequest();
+    var lat = coordinates[0];
+    var lng = coordinates[1];
+
+    // Paste your LocationIQ token below.
+    xhr.open('GET', `https://us1.locationiq.com/v1/reverse?key=pk.3e4135626f0abe2d1ae0c68993e85883&lat=${lat}&lon=${lng}&format=json`);
+    xhr.send();
+    xhr.onreadystatechange = processRequest;
+    xhr.addEventListener("readystatechange", processRequest, false);
+
+    function processRequest(e) {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var response = JSON.parse(xhr.responseText);
+            var city = response.address.city;
+            cityOrCountryName.value = city;
+            getData()
+            cityOrCountryName.value = "";
+            return;
+        }
     }
 }
-
-async function displayAllData() {
-    await getData();
-    getCurrentWeather();
+function displayAllData() {
+    getCoordintes();
+    getData();
 }
+displayAllData()
 
-displayAllData();
 
